@@ -1,0 +1,36 @@
+- restConfiguration:
+    component: "netty-http"
+    contextPath: "/"
+    apiContextPath: "/api-doc"
+    apiProperty:
+      - key: "api.title"
+        value: "API de Ejemplo con Camel"
+      - key: "api.version"
+        value: "1.0"
+      - key: "cors"
+        value: "true"
+      - key: "openapi.version"
+        value: "3.0"
+      - key: "api.specification.contentType.json"
+        value: "application/vnd.oai.openapi+json;version=3.0"
+      - key: "api.specification.contentType.yaml"
+        value: "application/vnd.oai.openapi;version=3.0"
+    bindingMode: "json"
+    enableCORS: true
+
+- rest:
+    path: /api
+    consumes: application/json
+    produces: application/json
+    get:
+      - path: /hello
+        description: Retorna un saludo simple
+        to: "direct:hello"
+
+- route:
+    id: hello-route
+    from:
+      uri: "direct:hello"
+      steps:
+        - setBody:
+            constant: '{"message": "Hola Mundo desde Camel REST!"}'
