@@ -1,0 +1,57 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API SpringBootCamelRestKeyclock",
+    "description": "API REST para validar integracion de spring boot - camel rest - keycloack",
+    "contact": {
+      "name": "Equipo de Desarrollo",
+      "email": "jorge.murillo@redcode.net.ec"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/camel/api/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "/productos",
+      "description": "Operaciones de productos"
+    }
+  ],
+  "paths": {
+    "/productos": {
+      "get": {
+        "tags": [
+          "/productos"
+        ],
+        "summary": "Obtener lista de productos",
+        "operationId": "verb1",
+        "responses": {
+          "200": {
+            "description": "Lista de productos obtenida exitosamente"
+          },
+          "401": {
+            "description": "No authorizado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "Introduce el token JWT obtenido desde Keycloak",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
