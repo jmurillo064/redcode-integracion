@@ -41,6 +41,8 @@ public class SecurityConfig {
                             "/swagger-ui/",
                             "/api/test/public"
                     ).permitAll();
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "/camel/api/admin-camel").hasRole("admin_client_role");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "/camel/api/user-camel").hasRole("user_client_role");
                     authorizeRequests.anyRequest().authenticated();
                     //authorizeRequests.requestMatchers("/**").permitAll();
                 })

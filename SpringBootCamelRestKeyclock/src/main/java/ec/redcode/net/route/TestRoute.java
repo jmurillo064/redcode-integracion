@@ -37,14 +37,45 @@ public class TestRoute extends RouteBuilder {
                 .get()
                 .description("Obtener lista de productos")
                 .responseMessage().code(200).message("Lista de productos obtenida exitosamente").endResponseMessage()
-                .responseMessage().code(401).message("No authorizado").endResponseMessage()
+                .responseMessage().code(401).message("Token de autenticación inválido o expirado").endResponseMessage()
+                .responseMessage().code(403).message("Acceso denegado - Permisos insuficientes para consultar productos").endResponseMessage()
                 .security("bearerAuth")
                 .to("direct:productos");
+
+        rest("/admin-camel")
+                .description("Operaciones para admin camel")
+                .get()
+                .description("Obtener rol de admin camel")
+                .responseMessage().code(200).message("Lista de productos obtenida exitosamente").endResponseMessage()
+                .responseMessage().code(401).message("Token de autenticación inválido o expirado").endResponseMessage()
+                .responseMessage().code(403).message("Acceso denegado - Permisos insuficientes para consultar administrador").endResponseMessage()
+                .security("bearerAuth")
+                .to("direct:admin");
+
+        rest("/user-camel")
+                .description("Operaciones para user camel")
+                .get()
+                .description("Obtener rol de admin camel")
+                .responseMessage().code(200).message("Lista de productos obtenida exitosamente").endResponseMessage()
+                .responseMessage().code(401).message("Token de autenticación inválido o expirado").endResponseMessage()
+                .responseMessage().code(403).message("Acceso denegado - Permisos insuficientes para consultar usuario").endResponseMessage()
+                .security("bearerAuth")
+                .to("direct:user");
 
         from("direct:productos")
                 .log("Procesando solicitud de productos")
                 .setHeader("Content-Type", constant("application/json"))
                 .setBody(constant("[{'id':1,'nombre':'Producto1','precio':100.00}]"));
+
+        from("direct:admin")
+                .log("Procesando solicitud de administrador")
+                .setHeader("Content-Type", constant("application/json"))
+                .setBody(constant("[{'id':1,'nombre':'Jorge','Rol':'Administrador'}]"));
+
+        from("direct:user")
+                .log("Procesando solicitud de usuario normal")
+                .setHeader("Content-Type", constant("application/json"))
+                .setBody(constant("[{'id':1,'nombre':'Antonio','Rol':'Usuario'}]"));
 
     }
 
